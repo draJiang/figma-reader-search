@@ -14,13 +14,19 @@ function ui() {
 
   // 关闭按钮
   let close = document.createElement("a");
-  close.innerText = "x";
+  close.innerText = "×";
   windowEl.appendChild(close);
   close.style = `
   font-size: 1.4rem;
   position: fixed;
   right: 20px;
   cursor:pointer;
+  width: 24px;
+  height: 24px;
+  text-align: center;
+  line-height: 24px;
+  margin-top: 4px;
+  color: rgb(255, 255, 255);
   `;
 
   close.onclick = function () {
@@ -50,6 +56,11 @@ function ui() {
   height: 100%;
   padding-left: 4px;
   `;
+
+  search_input.onkeydown = function (e) {
+    onInputEnter(e);
+  };
+
   search_box.appendChild(search_input);
 
   // 搜索按钮
@@ -82,15 +93,12 @@ function ui() {
   search_btn.onclick = function () {
     setTimeout(() => {
       let keyword = document.querySelector(".search_input").value;
-      figma_serach(keyword);
-    }, 100);
 
-    // 提示正在搜索中
-    if (document.querySelector(".msg_box")) {
-      document.querySelector(".msg_box").innerHTML = "Loading…";
-    }
-    // 清空搜索结果
-    document.querySelector(".result_list").innerHTML = "";
+      // 如果关键字为空，则忽略
+      if (keyword != "") {
+        figma_serach(keyword);
+      }
+    }, 100);
   };
 
   windowEl.style = `position: fixed;
@@ -203,6 +211,19 @@ function show_result(result_list) {
 }
 
 function figma_serach(keyword) {
+  // 如果关键字为空，则忽略
+  if (keyword == "") {
+    return;
+  }
+
+  // 提示正在搜索中
+  if (document.querySelector(".msg_box")) {
+    document.querySelector(".msg_box").innerHTML = "Loading…";
+  }
+  // 清空搜索结果
+  document.querySelector(".result_list").innerHTML = "";
+
+
   // 获取文档中的所有文本图层
   let all_text_node = figma.root.findAllWithCriteria({ types: ["TEXT"] });
   let result_list = [];
@@ -210,7 +231,8 @@ function figma_serach(keyword) {
   for (let i = 0; i < all_text_node.length; i++) {
     setTimeout(() => {
       if (all_text_node[i].characters.indexOf(keyword) >= 0) {
-        console.log(all_text_node[i].characters);
+        // console.log(all_text_node[i].characters);
+
         // 关键字的索引位置
         let index_start = all_text_node[i].characters.indexOf(keyword);
         // 关键字的结束位置
@@ -231,7 +253,7 @@ function figma_serach(keyword) {
   // 搜索结束
   setTimeout(() => {
     // 没有搜索结果
-    console.log(result_list.length);
+
     if (result_list.length == 0) {
       document.querySelector(".result_list").innerHTML = "Not find 🧐";
 
@@ -241,4 +263,18 @@ function figma_serach(keyword) {
       }
     }
   }, 100);
+}
+
+// 监听输入框敲击回车
+function onInputEnter(e) {
+  console.log("enter");
+  console.log(e);
+
+  // 监听回车键
+  if (e.keyCode == 13) {
+    console.log("enter");
+    let keyword = document.querySelector(".search_input").value;
+    console.log(keyword);
+    figma_serach(keyword);
+  }
 }
