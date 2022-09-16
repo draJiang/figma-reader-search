@@ -10,6 +10,8 @@ function ui() {
     // 主容器
     let windowEl = document.createElement("div");
     windowEl.classList.add("my_figma_search");
+    // 添加后滚动列表将不被画布截获
+    windowEl.classList.add("js-fullscreen-prevent-event-capture");
     document.body.appendChild(windowEl);
 
     windowEl.style = `position: fixed;
@@ -21,7 +23,7 @@ function ui() {
       background-color: var(--color-bg, #fff);
       
       inset: 0px;
-      margin: 234px 10px 10px auto;
+      margin: 52px 244px 10px auto;
       z-index: 111;
       overflow: hidden;
       box-shadow: rgb(20 15 35 / 17%) 0px 2px 4px, rgb(17 17 17 / 14%) 0px 10px 23px;
@@ -38,26 +40,7 @@ function ui() {
       overflow: auto;
       background-color: var(--color-bg);`;
 
-    // 关闭按钮
-    let close = document.createElement("a");
-    close.innerText = "×";
-    windowEl.appendChild(close);
-    close.style = `
-    font-size: 1.4rem;
-    position: fixed;
-    right: 16px;
-    cursor: pointer;
-    width: 24px;
-    height: 30px;
-    text-align: center;
-    margin-top: 8px;
-    color: var(--color-text);
-    z-index: 9999;
-  `;
 
-    close.onclick = function() {
-        windowEl.parentNode.removeChild(windowEl);
-    };
 
     // 搜索容器
     let search_box = document.createElement("div");
@@ -115,6 +98,24 @@ function ui() {
   `;
     search_box.appendChild(search_btn);
 
+
+    // 关闭按钮
+    let close = document.createElement("a");
+    close.innerText = "×";
+    search_box.appendChild(close);
+    close.style = `
+    font-size: 1.4rem;
+    cursor: pointer;
+    width: 24px;
+    text-align: center;
+    color: var(--color-text);
+    float: right;
+    line-height: 28px;
+      `;
+
+    close.onclick = function() {
+        windowEl.parentNode.removeChild(windowEl);
+    };
 
     // 提示信息
     let msg = document.createElement("div");
@@ -183,7 +184,7 @@ function show_result(result_list) {
     border-radius: 2px;
     margin-bottom: 0.4rem;
     cursor:pointer;
-    font-size: 0.9rem;`;
+    font-size: 0.8rem;`;
 
         // 点击定位到对应的图层
         r.onclick = function() {
