@@ -14,11 +14,14 @@ function ui() {
 
     windowEl.style = `position: fixed;
       width: 280px;
-      height: 580px;
+      height: 60%;
+      max-height: 1000px;
+      min-height: 400px;
+
       background-color: var(--color-bg, #fff);
       
       inset: 0px;
-      margin: 92px 10px 10px auto;
+      margin: 234px 10px 10px auto;
       z-index: 111;
       overflow: hidden;
       box-shadow: rgb(20 15 35 / 17%) 0px 2px 4px, rgb(17 17 17 / 14%) 0px 10px 23px;
@@ -42,7 +45,7 @@ function ui() {
     close.style = `
     font-size: 1.4rem;
     position: fixed;
-    right: 12px;
+    right: 16px;
     cursor: pointer;
     width: 24px;
     height: 30px;
@@ -64,7 +67,7 @@ function ui() {
     padding: 10px;
     height: 30px;
     position: fixed;
-    width: 264px;
+    width: 260px;
     border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, .1));
     background-color: var(--color-bg, #fff);
     border-radius: 4px 4px 0 0;
@@ -77,12 +80,13 @@ function ui() {
     search_input.style = `
   margin-right: 8px;
   height: 100%;
-  padding-left: 4px;
+  padding-left: 8px;
   border-radius: 1px;
   font-size: 0.8rem;
   background-color: var(--color-bg);
   color: var(--text-primary);
   border: 1px solid var(--color-border);
+  box-sizing: border-box;
   `;
 
     search_input.onkeydown = function(e) {
@@ -281,8 +285,8 @@ function figma_serach(keyword) {
             mail.href = 'mailto:jzlong666@gmail.com'
             mail.target = '_blank'
             mail.style = `
-            color: var(--color-text-fs-secondary);f
-            ont-size:0.8rem;
+            color: var(--color-text-fs-secondary);
+            font-size:0.8rem;
             cursor:pointer;
             `
             document.querySelector(".result_list").appendChild(mail);
