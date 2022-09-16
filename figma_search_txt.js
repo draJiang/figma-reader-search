@@ -77,6 +77,7 @@ function ui() {
     let search_input = document.createElement("input");
     search_input.classList.add("search_input");
     search_input.placeholder = "Enter a keyword";
+
     search_input.style = `
   margin-right: 8px;
   height: 100%;
@@ -88,6 +89,13 @@ function ui() {
   border: 1px solid var(--color-border);
   box-sizing: border-box;
   `;
+
+    setTimeout(() => {
+
+        document.querySelector(".search_input").focus()
+
+    }, 100);
+
 
     search_input.onkeydown = function(e) {
         onInputEnter(e);
@@ -106,6 +114,7 @@ function ui() {
     font-size: 0.8rem;
   `;
     search_box.appendChild(search_btn);
+
 
     // 提示信息
     let msg = document.createElement("div");
