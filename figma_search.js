@@ -64,7 +64,6 @@ if (windowEl.querySelector("style") != true) {
       color: rgb(255, 255, 255);
       border-radius: 4px;
       font-size: 0.8rem;
-      cursor:pointer;
     }
   
     li {
