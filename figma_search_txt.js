@@ -1,6 +1,126 @@
 // 创建 UI
 let windowEl = ui();
-figma.skipInvisibleInstanceChildren = true; // 忽略隐藏的图层
+
+// 设置样式
+if (windowEl.querySelector("style") != true) {
+    let my_style = document.createElement("style")
+    windowEl.appendChild(my_style);
+
+    console.log(windowEl.querySelector("style"));
+
+
+    my_style.innerHTML = `
+  
+    ::-webkit-scrollbar{
+        width: 6px;
+        padding:2px;
+        background-color:var(--color-bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      
+      background-color:var(--color-scrollbar);
+      border-radius: 100px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      opacity:0.8;
+    }
+  
+    .search_box {
+  
+      padding: 10px;
+      height: 30px;
+      position: fixed;
+      width: 260px;
+      border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, .1));
+      background-color: var(--color-bg, #fff);
+      border-radius: 4px 4px 0 0;
+      z-index: 999;
+
+    }
+
+  
+    .search_input {
+      margin-right: 8px;
+      height: 100%;
+      padding-left: 8px;
+      border-radius: 1px;
+      font-size: 0.8rem;
+      background-color: var(--color-bg);
+      color: var(--text-primary);
+      border: 1px solid var(--color-border);
+      box-sizing: border-box;
+    }
+  
+    .search_input:focus {
+      border: 1px solid var(--color-bg-brand);
+    }
+  
+    button {
+      padding: 0px 12px;
+      height: 100%;
+      background-color: var(--color-bg-brand);
+      color: rgb(255, 255, 255);
+      border-radius: 4px;
+      font-size: 0.8rem;
+      cursor:pointer;
+    }
+  
+    li {
+     
+      border-bottom: 1px solid var(--color-border);
+      
+      border-radius: 2px;
+      cursor:pointer;
+      font-size: 0.8rem;
+  
+    }
+  
+    li a {
+      display: block;
+      padding: 0.6rem 4px 0.6rem;
+    }
+
+    li a:visited {
+      color:red;
+    }
+
+    li .a_visited {
+      opacity:0.5;
+    }
+  
+    .close_btn {
+      font-size: 1.4rem;
+      cursor: pointer;
+      width: 24px;
+      text-align: center;
+      color: var(--color-text);
+      float: right;
+      line-height: 28px; 
+    }
+  
+
+
+    button:hover,a:hover {
+      opacity:0.8;
+    }
+  
+  
+    .my_mail {
+        color: var(--color-text-fs-secondary);
+        font-size:0.8rem;
+        cursor:pointer;
+    }
+  
+  `
+
+}
+
+
+
+// 忽略隐藏的图层
+figma.skipInvisibleInstanceChildren = true;
 // 创建 UI
 function ui() {
     if (document.querySelector(".my_figma_search")) {
@@ -14,14 +134,15 @@ function ui() {
     windowEl.classList.add("js-fullscreen-prevent-event-capture");
     document.body.appendChild(windowEl);
 
-    windowEl.style = `position: fixed;
+    windowEl.style = `
+    position: fixed;
       width: 280px;
       height: 60%;
       max-height: 1000px;
       min-height: 400px;
 
       background-color: var(--color-bg, #fff);
-      
+
       inset: 0px;
       margin: 52px 244px 10px auto;
       z-index: 111;
@@ -31,7 +152,7 @@ function ui() {
       border-radius: 4px;
       color: var(--text-primary);
       font-family: sans-serif;
-      
+
       box-sizing: border-box;
       overflow-y: auto;
       font-size: 14px;
@@ -46,32 +167,12 @@ function ui() {
     let search_box = document.createElement("div");
     search_box.classList.add("search_box");
     windowEl.appendChild(search_box);
-    search_box.style = `
-    padding: 10px;
-    height: 30px;
-    position: fixed;
-    width: 260px;
-    border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, .1));
-    background-color: var(--color-bg, #fff);
-    border-radius: 4px 4px 0 0;
-  `;
+
 
     // 搜索框
     let search_input = document.createElement("input");
     search_input.classList.add("search_input");
     search_input.placeholder = "Enter a keyword";
-
-    search_input.style = `
-  margin-right: 8px;
-  height: 100%;
-  padding-left: 8px;
-  border-radius: 1px;
-  font-size: 0.8rem;
-  background-color: var(--color-bg);
-  color: var(--text-primary);
-  border: 1px solid var(--color-border);
-  box-sizing: border-box;
-  `;
 
     setTimeout(() => {
 
@@ -88,30 +189,16 @@ function ui() {
 
     // 搜索按钮
     let search_btn = document.createElement("button");
-    search_btn.style = `
-    padding: 0px 12px;
-    height: 100%;
-    background-color: var(--color-bg-brand);
-    color: rgb(255, 255, 255);
-    border-radius: 4px;
-    font-size: 0.8rem;
-  `;
+
+
     search_box.appendChild(search_btn);
 
 
     // 关闭按钮
     let close = document.createElement("a");
     close.innerText = "×";
+    close.classList.add('close_btn')
     search_box.appendChild(close);
-    close.style = `
-    font-size: 1.4rem;
-    cursor: pointer;
-    width: 24px;
-    text-align: center;
-    color: var(--color-text);
-    float: right;
-    line-height: 28px;
-      `;
 
     close.onclick = function() {
         windowEl.parentNode.removeChild(windowEl);
@@ -168,6 +255,7 @@ function show_result(result_list) {
 
     for (let i = 0; i < result_list.length; i++) {
         let r = document.createElement("li");
+        let list_link = document.createElement("a");
 
         // 关键字高亮
         let r_str = result_list[i]["node"].characters;
@@ -177,18 +265,16 @@ function show_result(result_list) {
             `<span style="color: var(--color-text-brand);font-weight: bold;">${result_list[i]["keyword"]}</span>`
         );
 
-        r.innerHTML = r_str;
-        r.style = `
-        border: 1px solid var(--color-border);
-    padding: 4px;
-    border-radius: 2px;
-    margin-bottom: 0.4rem;
-    cursor:pointer;
-    font-size: 0.8rem;`;
+        list_link.innerHTML = r_str;
+
 
         // 点击定位到对应的图层
-        r.onclick = function() {
+        list_link.onclick = function(e) {
             // 搜索结果是否在当前页面
+            console.log(e);
+
+            // 设置已访问样式
+            e.target.classList.add('a_visited')
 
             // 当前页面 ID
             let this_page_id = figma.currentPage.id;
@@ -232,7 +318,7 @@ function show_result(result_list) {
                 end: result_list[i]["end"],
             };
         };
-
+        r.appendChild(list_link);
         list.appendChild(r);
         // windowEl.appendChild(list);
     }
@@ -294,11 +380,7 @@ function figma_serach(keyword) {
             mail.innerText = '💬jzlong666@gmail.com'
             mail.href = 'mailto:jzlong666@gmail.com'
             mail.target = '_blank'
-            mail.style = `
-            color: var(--color-text-fs-secondary);
-            font-size:0.8rem;
-            cursor:pointer;
-            `
+            mail.classList.add('my_mail')
             document.querySelector(".result_list").appendChild(mail);
 
             // document.querySelector(".result_list").innerHTML += '<p style="color: var(--color-text-fs-secondary);font-size:0.8rem;">jzlong666@gmail.com</p>'
