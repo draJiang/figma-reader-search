@@ -14,7 +14,7 @@ if (windowEl.querySelector("style") != true) {
     ::-webkit-scrollbar{
         width: 6px;
         padding:2px;
-        background-color:var(--color-bg);
+        background-color:none;
     }
 
     ::-webkit-scrollbar-thumb {
