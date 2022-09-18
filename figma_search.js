@@ -65,7 +65,15 @@ if (windowEl.querySelector("style") != true) {
       border-radius: 4px;
       font-size: 0.8rem;
     }
-  
+
+    .result_list {
+        padding: 10px;
+        overflow: overlay;
+        top: 52px;
+        bottom: 0px;
+        position: absolute;
+    }
+
     li {
      
       border-bottom: 1px solid var(--color-border);
@@ -81,9 +89,6 @@ if (windowEl.querySelector("style") != true) {
       padding: 0.6rem 4px 0.6rem;
     }
 
-    li a:visited {
-      color:red;
-    }
 
     li .a_visited {
       opacity:0.5;
@@ -99,17 +104,30 @@ if (windowEl.querySelector("style") != true) {
       line-height: 28px; 
     }
   
-
-
-    button:hover,a:hover {
+    button:hover {
       opacity:0.8;
+    }
+
+    a:hover {
+        opacity:0.7;
     }
   
   
-    .my_mail {
+    .info {
         color: var(--color-text-fs-secondary);
-        font-size:0.8rem;
-        cursor:pointer;
+        font-size: 0.8rem;
+        cursor: pointer;
+        display: block;
+        text-align: center;
+        margin: 14px 0px 4px 0px;
+        width: fit-content;
+        left: 50%;
+        position: relative;
+        transform: translateX(-50%);
+    }
+
+    .info:hover {
+        text-decoration:underline;
     }
   
   `
@@ -214,8 +232,6 @@ function ui() {
     // 搜索结果
     list = document.createElement("ul");
     list.classList.add("result_list");
-    list.style = `
-  margin: 10px 10px 10px 10px;`;
 
     windowEl.appendChild(list);
 
@@ -376,10 +392,10 @@ function figma_serach(keyword) {
             }
         } else {
             let mail = document.createElement('a')
-            mail.innerText = '💬jzlong666@gmail.com'
-            mail.href = 'mailto:jzlong666@gmail.com'
+            mail.innerText = 'about'
+            mail.href = 'https://blog.dabing.one/20220918'
             mail.target = '_blank'
-            mail.classList.add('my_mail')
+            mail.classList.add('info')
             document.querySelector(".result_list").appendChild(mail);
 
             // document.querySelector(".result_list").innerHTML += '<p style="color: var(--color-text-fs-secondary);font-size:0.8rem;">jzlong666@gmail.com</p>'
