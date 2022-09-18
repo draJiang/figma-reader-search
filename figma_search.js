@@ -67,20 +67,20 @@ if (windowEl.querySelector("style") != true) {
     }
 
     .result_list {
-        padding: 10px;
         overflow: overlay;
         top: 52px;
         bottom: 0px;
         position: absolute;
+        width: 100%;
     }
 
     li {
      
-      border-bottom: 1px solid var(--color-border);
-      
-      border-radius: 2px;
-      cursor:pointer;
-      font-size: 0.8rem;
+        border-bottom: 1px solid var(--color-border);
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 0.8rem;
+        padding: 4px 10px;
   
     }
   
@@ -119,7 +119,7 @@ if (windowEl.querySelector("style") != true) {
         cursor: pointer;
         display: block;
         text-align: center;
-        margin: 14px 0px 4px 0px;
+        margin: 14px 0px 14px 0px;
         width: fit-content;
         left: 50%;
         position: relative;
@@ -384,12 +384,13 @@ function figma_serach(keyword) {
         // 没有搜索结果
 
         if (result_list.length == 0) {
-            document.querySelector(".result_list").innerHTML = "Not find 🧐";
+            document.querySelector(".msg_box").innerHTML = "Not find 🧐";
 
             // 隐藏提示信息
-            if (document.querySelector(".msg_box") && document.querySelector(".msg_box").innerHTML != "") {
-                document.querySelector(".msg_box").innerHTML = "";
-            }
+            // if (document.querySelector(".msg_box") && document.querySelector(".msg_box").innerHTML != "") {
+            //     document.querySelector(".msg_box").innerHTML = "";
+            // }
+
         } else {
             let mail = document.createElement('a')
             mail.innerText = 'about'
