@@ -30,7 +30,7 @@ if (windowEl.querySelector("style") != true) {
     .search_box {
   
       padding: 10px;
-      height: 30px;
+      height: auto;
       position: fixed;
       width: 260px;
       border-bottom: 1px solid var(--color-border, rgba(0, 0, 0, .1));
@@ -43,27 +43,27 @@ if (windowEl.querySelector("style") != true) {
   
     .search_input {
       margin-right: 8px;
-      height: 100%;
+      height: 30px;
       padding-left: 8px;
       border-radius: 1px;
-      font-size: 0.8rem;
-      background-color: var(--color-bg);
-      color: var(--text-primary);
-      border: 1px solid var(--color-border);
+      font-size: 0.9em;
+      background-color: var(--color-bg,#fff);
+      color: var(--text-primary, rgba(0, 0, 0, .8));
+      border: 1px solid var(--color-border,#e6e6e6);
       box-sizing: border-box;
     }
   
     .search_input:focus {
-      border: 1px solid var(--color-bg-brand);
+      border: 1px solid var(--color-bg-brand,#0d99ff);
     }
   
     button {
       padding: 0px 12px;
-      height: 100%;
-      background-color: var(--color-bg-brand);
+      height: 30px;
+      background-color: var(--color-bg-brand,#0d99ff);
       color: rgb(255, 255, 255);
       border-radius: 4px;
-      font-size: 0.8rem;
+      font-size: 0.9em;
     }
 
     .result_list {
@@ -76,17 +76,18 @@ if (windowEl.querySelector("style") != true) {
 
     li {
      
-        border-bottom: 1px solid var(--color-border);
+        border-bottom: 1px solid var(--color-border,#e6e6e6);
         border-radius: 2px;
         cursor: pointer;
-        font-size: 0.8rem;
+        font-size: 0.9em;
         padding: 4px 10px;
+        line-height: 1.8em;
   
     }
   
     li a {
       display: block;
-      padding: 0.6rem 4px 0.6rem;
+      padding: 0.6em 4px 0.6em;
     }
 
 
@@ -95,11 +96,11 @@ if (windowEl.querySelector("style") != true) {
     }
   
     .close_btn {
-      font-size: 1.4rem;
+      font-size: 1.6em;
       cursor: pointer;
       width: 24px;
       text-align: center;
-      color: var(--color-text);
+      color: var(--color-text, rgba(0, 0, 0, .8));
       float: right;
       line-height: 28px; 
     }
@@ -114,8 +115,8 @@ if (windowEl.querySelector("style") != true) {
   
   
     .info {
-        color: var(--color-text-fs-secondary);
-        font-size: 0.8rem;
+        color: var(--color-text-fs-secondary, rgba(0, 0, 0, .8));
+        font-size: 0.9em;
         cursor: pointer;
         display: block;
         text-align: center;
@@ -277,7 +278,7 @@ function show_result(result_list) {
         const Reg = new RegExp(result_list[i]["keyword"], "g");
         r_str = r_str.replace(
             Reg,
-            `<span style="color: var(--color-text-brand);font-weight: bold;">${result_list[i]["keyword"]}</span>`
+            `<span style="color: var(--color-text-brand,#0d99ff);font-weight: bold;">${result_list[i]["keyword"]}</span>`
         );
 
         list_link.innerHTML = r_str;
