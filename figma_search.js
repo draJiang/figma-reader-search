@@ -155,7 +155,7 @@ function ui() {
     position: fixed;
       width: 280px;
       height: 60%;
-      max-height: 1000px;
+      max-height: 800px;
       min-height: 400px;
 
       background-color: var(--color-bg, #fff);
@@ -394,7 +394,7 @@ function figma_serach(keyword) {
         } else {
             let mail = document.createElement('a')
             mail.innerText = 'about'
-            mail.href = 'https://blog.dabing.one/20220918'
+            mail.href = 'https://km.netease.com/team/km_cfuncenter/article/445183'
             mail.target = '_blank'
             mail.classList.add('info')
             document.querySelector(".result_list").appendChild(mail);
