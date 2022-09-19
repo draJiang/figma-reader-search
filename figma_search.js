@@ -1,13 +1,11 @@
 // 创建 UI
 let windowEl = ui();
 
+
 // 设置样式
 if (windowEl.querySelector("style") != true) {
     let my_style = document.createElement("style")
     windowEl.appendChild(my_style);
-
-    console.log(windowEl.querySelector("style"));
-
 
     my_style.innerHTML = `
   
@@ -79,7 +77,7 @@ if (windowEl.querySelector("style") != true) {
         border-bottom: 1px solid var(--color-border,#e6e6e6);
         border-radius: 2px;
         cursor: pointer;
-        font-size: 0.9em;
+        font-size: 0.92em;
         padding: 4px 10px;
         line-height: 1.8em;
   
@@ -116,7 +114,7 @@ if (windowEl.querySelector("style") != true) {
   
     .info {
         color: var(--color-text-fs-secondary, rgba(0, 0, 0, .8));
-        font-size: 0.9em;
+        font-size: 0.8em;
         cursor: pointer;
         display: block;
         text-align: center;
@@ -133,6 +131,15 @@ if (windowEl.querySelector("style") != true) {
   
   `
 
+}
+
+// 判断是否在 Figma 文件中打开
+console.log(window.location.href);
+if (window.location.href.indexOf('figma.com')<0) {
+        // 提示到 Figma 中打开
+        if (document.querySelector(".msg_box")) {
+            document.querySelector(".msg_box").innerHTML = "⚠️ Please open it in Figma file ⚠️";
+        }
 }
 
 
@@ -407,14 +414,10 @@ function figma_serach(keyword) {
 
 // 监听输入框敲击回车
 function onInputEnter(e) {
-    console.log("enter");
-    console.log(e);
 
     // 监听回车键
     if (e.keyCode == 13) {
-        console.log("enter");
         let keyword = document.querySelector(".search_input").value;
-        console.log(keyword);
         figma_serach(keyword);
     }
 }
