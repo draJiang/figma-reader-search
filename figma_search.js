@@ -142,10 +142,9 @@ if (window.location.href.indexOf('figma.com')<0) {
         }
 }
 
-
-
 // 忽略隐藏的图层
 figma.skipInvisibleInstanceChildren = true;
+
 // 创建 UI
 function ui() {
     if (document.querySelector(".my_figma_search")) {
@@ -262,6 +261,7 @@ function ui() {
     return windowEl;
 }
 
+// 显示搜索结果
 function show_result(result_list) {
     // 隐藏提示信息
     if (document.querySelector(".msg_box") && document.querySelector(".msg_box").innerHTML != "") {
@@ -282,10 +282,10 @@ function show_result(result_list) {
 
         // 关键字高亮
         let r_str = result_list[i]["node"].characters;
-        const Reg = new RegExp(result_list[i]["keyword"], "g");
+        const Reg = new RegExp("("+result_list[i]["keyword"]+")", "gi");
         r_str = r_str.replace(
             Reg,
-            `<span style="color: var(--color-text-brand,#0d99ff);font-weight: bold;">${result_list[i]["keyword"]}</span>`
+            `<span style="color: var(--color-text-brand,#0d99ff);font-weight: bold;">$1</span>`
         );
 
         list_link.innerHTML = r_str;
@@ -347,6 +347,7 @@ function show_result(result_list) {
     }
 }
 
+// 搜索
 function figma_serach(keyword) {
     // 如果关键字为空，则忽略
     if (keyword == "") {
@@ -364,14 +365,20 @@ function figma_serach(keyword) {
     // 获取文档中的所有文本图层
     let all_text_node = figma.root.findAllWithCriteria({ types: ["TEXT"] });
     let result_list = [];
+    
     // 遍历所有文本图层，寻找包含关键字的图层
+    const Reg = new RegExp(keyword, "i");
+
     for (let i = 0; i < all_text_node.length; i++) {
         setTimeout(() => {
-            if (all_text_node[i].characters.indexOf(keyword) >= 0) {
+
+            let r = all_text_node[i].characters.match(Reg)
+            
+            if (r != null) {
                 // console.log(all_text_node[i].characters);
 
                 // 关键字的索引位置
-                let index_start = all_text_node[i].characters.indexOf(keyword);
+                let index_start = r.index;
                 // 关键字的结束位置
                 let index_end = index_start + keyword.length;
 
