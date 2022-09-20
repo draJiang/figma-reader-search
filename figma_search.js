@@ -73,7 +73,7 @@ if (windowEl.querySelector("style") != true) {
     .search_input {
       margin-right: 8px;
       height: 30px;
-      width:124px;
+      width:110px;
       padding-left: 8px;
       border-radius: 1px;
       font-size: 0.9em;
@@ -385,9 +385,15 @@ function show_result(result_list) {
             // 设置当前选中的位置
             list_current_index = new Number(e.target.getAttribute("index"));
 
-            // 点击对象设置在可视范围内
-            e.target.parentElement.scrollIntoView()
-            document.querySelector(".result_list").scrollTop = e.target.offsetTop - 100
+            // 点击对象设置在可视范围内（如果不在可视范围内）
+            console.log(e.target.parentElement.getBoundingClientRect());
+            let this_top = e.target.parentElement.getBoundingClientRect().top
+                // 如果当前元素距离顶部的位置大于容器高度
+            if (this_top > windowEl.clientHeight || this_top < 0) {
+                e.target.parentElement.scrollIntoView()
+                document.querySelector(".result_list").scrollTop = e.target.offsetTop - 100
+            }
+
 
             // 取消旧的选中样式
             let current_seleted = document.querySelector(".list_selected")
