@@ -290,7 +290,9 @@ function ui() {
   btn_box.appendChild(pre_btn);
   // 搜索按钮点击
   pre_btn.onclick = function () {
-    pre_result();
+
+    pre_result()
+
   };
 
   // 搜索结果导航按钮 - 下一个
@@ -455,10 +457,6 @@ function show_result(result_list) {
         start: result_list[i]["start"],
         end: result_list[i]["end"],
       };
-
-      // 文本框保持焦点，方便监听回车键进行导航
-      document.querySelector(".search_input").focus();
-
     };
     r.appendChild(list_link);
     list.appendChild(r);
@@ -617,6 +615,7 @@ function next_result() {
 }
 
 function pre_result() {
+
   if (list_current_index <= 0) {
     // 选中最后 1 个搜索结果
     list_current_index = result_count;

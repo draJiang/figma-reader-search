@@ -290,7 +290,16 @@ function ui() {
   btn_box.appendChild(pre_btn);
   // 搜索按钮点击
   pre_btn.onclick = function () {
-    pre_result();
+    // 设置搜索结果获取焦点
+    // let result_node_list = document.getElementsByClassName("link_item");
+
+    if (list_current_index <= 0) {
+      // 选中最后 1 个搜索结果
+      list_current_index = result_count;
+    }
+
+    console.log(list_current_index - 1);
+    result_node_list[list_current_index - 1].click();
   };
 
   // 搜索结果导航按钮 - 下一个
@@ -455,10 +464,6 @@ function show_result(result_list) {
         start: result_list[i]["start"],
         end: result_list[i]["end"],
       };
-
-      // 文本框保持焦点，方便监听回车键进行导航
-      document.querySelector(".search_input").focus();
-
     };
     r.appendChild(list_link);
     list.appendChild(r);
@@ -565,8 +570,8 @@ function onInputEnter(e) {
 
   // Shift + 回车键
   if (e.keyCode == 13 && e.shiftKey == true) {
-    // 导航到上一个搜索结果
-    pre_result();
+    // 导航到下一个搜索结果
+    next_result();
     // 文本框保持焦点，否则下一次回车键将无法导航
     document.querySelector(".search_input").focus();
   }
@@ -614,14 +619,4 @@ function next_result() {
 
   console.log(list_current_index + 1);
   result_node_list[list_current_index + 1].click();
-}
-
-function pre_result() {
-  if (list_current_index <= 0) {
-    // 选中最后 1 个搜索结果
-    list_current_index = result_count;
-  }
-
-  console.log(list_current_index - 1);
-  result_node_list[list_current_index - 1].click();
 }

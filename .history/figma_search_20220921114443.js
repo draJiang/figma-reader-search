@@ -6,7 +6,7 @@
 // 全局变量
 let list_current_index = -1; // 当前选中的搜索结果索引
 let result_count = 0; // 搜索结果数量
-let result_node_list = [];
+let result_node_list = []
 let my_timer;
 
 // 创建 UI
@@ -290,7 +290,16 @@ function ui() {
   btn_box.appendChild(pre_btn);
   // 搜索按钮点击
   pre_btn.onclick = function () {
-    pre_result();
+    // 设置搜索结果获取焦点
+    let result_node_list = document.getElementsByClassName("link_item");
+
+    if (list_current_index <= 0) {
+      // 选中最后 1 个搜索结果
+      list_current_index = result_count;
+    }
+
+    console.log(list_current_index - 1);
+    result_node_list[list_current_index - 1].click();
   };
 
   // 搜索结果导航按钮 - 下一个
@@ -305,7 +314,16 @@ function ui() {
   btn_box.appendChild(next_btn);
   // 搜索按钮点击
   next_btn.onclick = function () {
-    next_result();
+    // 设置搜索结果获取焦点
+    // let r_list = document.getElementsByClassName("link_item");
+
+    if (list_current_index + 1 >= result_node_list.length) {
+      // 选中第 1 个结果
+      list_current_index = -1;
+    }
+
+    console.log(list_current_index + 1);
+    result_node_list[list_current_index + 1].click();
   };
 
   // 关闭按钮
@@ -455,16 +473,12 @@ function show_result(result_list) {
         start: result_list[i]["start"],
         end: result_list[i]["end"],
       };
-
-      // 文本框保持焦点，方便监听回车键进行导航
-      document.querySelector(".search_input").focus();
-
     };
     r.appendChild(list_link);
     list.appendChild(r);
     // windowEl.appendChild(list);
   }
-
+  
   // 记录当前生成了多少个节点
   result_node_list = document.getElementsByClassName("link_item");
 }
@@ -554,21 +568,10 @@ function figma_serach(keyword) {
 
 // 监听输入框敲击回车
 function onInputEnter(e) {
-  console.log(e);
-  // 回车键
-  if (e.keyCode == 13 && e.shiftKey == false) {
-    // 导航到下一个搜索结果
-    next_result();
-    // 文本框保持焦点，否则下一次回车键将无法导航
-    document.querySelector(".search_input").focus();
-  }
-
-  // Shift + 回车键
-  if (e.keyCode == 13 && e.shiftKey == true) {
-    // 导航到上一个搜索结果
-    pre_result();
-    // 文本框保持焦点，否则下一次回车键将无法导航
-    document.querySelector(".search_input").focus();
+  // 监听回车键
+  if (e.keyCode == 13) {
+    let keyword = document.querySelector(".search_input").value;
+    figma_serach(keyword);
   }
 }
 
@@ -600,28 +603,4 @@ function setNavBtnEnable(class_name) {
   nav_btn.forEach((btn) => {
     btn.classList.remove("disabled_btn");
   });
-}
-
-// 导航到下一个搜索结果
-function next_result() {
-  // 设置搜索结果获取焦点
-  // let r_list = document.getElementsByClassName("link_item");
-
-  if (list_current_index + 1 >= result_node_list.length) {
-    // 选中第 1 个结果
-    list_current_index = -1;
-  }
-
-  console.log(list_current_index + 1);
-  result_node_list[list_current_index + 1].click();
-}
-
-function pre_result() {
-  if (list_current_index <= 0) {
-    // 选中最后 1 个搜索结果
-    list_current_index = result_count;
-  }
-
-  console.log(list_current_index - 1);
-  result_node_list[list_current_index - 1].click();
 }
