@@ -1,6 +1,8 @@
 # Figma 只读权限搜索工具
 
-![image](https://user-images.githubusercontent.com/38482112/190867791-1f76ab54-2111-4bfb-8ff8-ff7893c3bde8.png)
+
+![CleanShot 2022-09-21 at 10 20 08](https://user-images.githubusercontent.com/38482112/191413767-db21d2d6-9118-4b95-ab2d-9f878ab27013.png)
+
 
 Figma 暂时没有原生的文档内搜索工具，拥有编辑权限的用户可通过插件实现搜索，但只读权限的用户则无计可施。
 此工具支持**只读**权限的用户对设计稿进行文字搜索。
