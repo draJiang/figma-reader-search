@@ -60,7 +60,7 @@ if (windowEl.querySelector("style") != true) {
     }
 
     .btn_box * {
-      margin-right:8px;
+
     }
 
     .btn_box span{
