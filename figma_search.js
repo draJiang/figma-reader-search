@@ -18,10 +18,10 @@ let windowEl = ui();
 
 // 设置样式
 if (windowEl.querySelector("style") != true) {
-  let my_style = document.createElement("style");
-  windowEl.appendChild(my_style);
+    let my_style = document.createElement("style");
+    windowEl.appendChild(my_style);
 
-  my_style.innerHTML = `
+    my_style.innerHTML = `
   
     ::-webkit-scrollbar{
         width: 6px;
@@ -50,13 +50,13 @@ if (windowEl.querySelector("style") != true) {
       border-radius: 4px 4px 0 0;
       z-index: 999;
       display:flex;
-
+      justify-content: space-between;
     }
 
     .btn_box {
       display:flex;
-      position: absolute;
-      right: 4px;
+      justify-content: flex-end;
+      align-items: center;
     }
 
     .btn_box * {
@@ -140,11 +140,10 @@ if (windowEl.querySelector("style") != true) {
   
     .close_btn,.nav_btn {
       cursor: pointer;
-      width: 24px;
       text-align: center;
       color: var(--color-text, rgba(0, 0, 0, .8));
-      line-height: 28px; 
-      margin: auto 4px auto 4px;
+      margin-left: 4px;
+      padding: 4px 0px 4px 4px;
     }
 
     button:hover {
@@ -179,10 +178,10 @@ if (windowEl.querySelector("style") != true) {
 // 判断是否在 Figma 文件中打开
 console.log(window.location.href);
 if (window.location.href.indexOf("figma.com") < 0) {
-  // 提示到 Figma 中打开
-  if (document.querySelector(".msg_box")) {
-    document.querySelector(".msg_box").innerHTML = "⚠️ Please open it in Figma file ⚠️";
-  }
+    // 提示到 Figma 中打开
+    if (document.querySelector(".msg_box")) {
+        document.querySelector(".msg_box").innerHTML = "⚠️ Please open it in Figma file ⚠️";
+    }
 }
 
 // 忽略隐藏的图层
@@ -190,18 +189,18 @@ figma.skipInvisibleInstanceChildren = true;
 
 // 创建 UI
 function ui() {
-  if (document.querySelector(".my_figma_search")) {
-    return;
-  }
+    if (document.querySelector(".my_figma_search")) {
+        return;
+    }
 
-  // 主容器
-  let windowEl = document.createElement("div");
-  windowEl.classList.add("my_figma_search");
-  // 添加后滚动列表将不被画布截获
-  windowEl.classList.add("js-fullscreen-prevent-event-capture");
-  document.body.appendChild(windowEl);
+    // 主容器
+    let windowEl = document.createElement("div");
+    windowEl.classList.add("my_figma_search");
+    // 添加后滚动列表将不被画布截获
+    windowEl.classList.add("js-fullscreen-prevent-event-capture");
+    document.body.appendChild(windowEl);
 
-  windowEl.style = `
+    windowEl.style = `
     position: fixed;
       width: 280px;
       height: 60%;
@@ -228,400 +227,400 @@ function ui() {
       overflow: auto;
       background-color: var(--color-bg);`;
 
-  // 搜索容器
-  let search_box = document.createElement("div");
-  search_box.classList.add("search_box");
-  windowEl.appendChild(search_box);
+    // 搜索容器
+    let search_box = document.createElement("div");
+    search_box.classList.add("search_box");
+    windowEl.appendChild(search_box);
 
-  // 搜索框
-  let search_input = document.createElement("input");
-  search_input.classList.add("search_input");
-  // search_input.placeholder = "Enter a keyword";
+    // 搜索框
+    let search_input = document.createElement("input");
+    search_input.classList.add("search_input");
+    // search_input.placeholder = "Enter a keyword";
 
-  setTimeout(() => {
-    document.querySelector(".search_input").focus();
-  }, 100);
-
-  search_input.onkeydown = function (e) {
-    onInputEnter(e);
-  };
-
-  search_input.oninput = function (e) {
-    onSearchInputChange(e);
-  };
-
-  search_box.appendChild(search_input);
-
-  // 搜索按钮
-  let search_btn = document.createElement("button");
-  // search_box.appendChild(search_btn);
-  // 搜索按钮点击
-  search_btn.onclick = function () {
     setTimeout(() => {
-      let keyword = document.querySelector(".search_input").value;
-
-      // 如果关键字为空，则忽略
-      if (keyword != "") {
-        figma_serach(keyword);
-      }
+        document.querySelector(".search_input").focus();
     }, 100);
-  };
 
-  // 次要按钮容器
-  let btn_box = document.createElement("div");
-  btn_box.classList.add("btn_box");
-  search_box.appendChild(btn_box);
+    search_input.onkeydown = function(e) {
+        onInputEnter(e);
+    };
 
-  // 搜索结果数量
-  let index_and_count = document.createElement("span");
-  index_and_count.classList.add("index_and_count");
-  index_and_count.innerText = "";
-  btn_box.appendChild(index_and_count);
+    search_input.oninput = function(e) {
+        onSearchInputChange(e);
+    };
 
-  // 搜索结果导航按钮 - 上一个
-  let pre_btn = document.createElement("a");
+    search_box.appendChild(search_input);
 
-  pre_btn.classList.add("nav_btn");
-  pre_btn.classList.add("pre_btn");
-  pre_btn.classList.add("disabled_btn");
+    // 搜索按钮
+    let search_btn = document.createElement("button");
+    // search_box.appendChild(search_btn);
+    // 搜索按钮点击
+    search_btn.onclick = function() {
+        setTimeout(() => {
+            let keyword = document.querySelector(".search_input").value;
 
-  pre_btn.innerHTML =
-    '<svg t="1663692144197" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2173" width="20" height="20"><path d="M745.376 662.624L512 429.248l-233.376 233.376-45.248-45.248L512 338.752l278.624 278.624z" fill="#181818" p-id="2174"></path></svg>';
-  btn_box.appendChild(pre_btn);
-  // 搜索按钮点击
-  pre_btn.onclick = function () {
-    pre_result();
-  };
+            // 如果关键字为空，则忽略
+            if (keyword != "") {
+                figma_serach(keyword);
+            }
+        }, 100);
+    };
 
-  // 搜索结果导航按钮 - 下一个
-  let next_btn = document.createElement("a");
+    // 次要按钮容器
+    let btn_box = document.createElement("div");
+    btn_box.classList.add("btn_box");
+    search_box.appendChild(btn_box);
 
-  next_btn.classList.add("nav_btn");
-  next_btn.classList.add("next_btn");
-  next_btn.classList.add("disabled_btn");
+    // 搜索结果数量
+    let index_and_count = document.createElement("span");
+    index_and_count.classList.add("index_and_count");
+    index_and_count.innerText = "";
+    btn_box.appendChild(index_and_count);
 
-  next_btn.innerHTML =
-    '<svg t="1663692104684" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2019" width="20" height="20"><path d="M512 685.248l-278.624-278.624 45.248-45.248L512 594.752l233.376-233.376 45.248 45.248z" fill="#181818" p-id="2020"></path></svg>';
-  btn_box.appendChild(next_btn);
-  // 搜索按钮点击
-  next_btn.onclick = function () {
-    next_result();
-  };
+    // 搜索结果导航按钮 - 上一个
+    let pre_btn = document.createElement("a");
 
-  // 关闭按钮
-  let close = document.createElement("a");
-  close.innerHTML =
-    '<svg t="1663692441621" class="icon" viewBox="0 0 1045 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7983" width="18" height="18"><path d="M282.517333 213.376l-45.354666 45.162667L489.472 512 237.162667 765.461333l45.354666 45.162667L534.613333 557.354667l252.096 253.269333 45.354667-45.162667-252.288-253.44 252.288-253.482666-45.354667-45.162667L534.613333 466.624l-252.096-253.226667z" p-id="7984"></path></svg>';
-  close.classList.add("close_btn");
-  btn_box.appendChild(close);
+    pre_btn.classList.add("nav_btn");
+    pre_btn.classList.add("pre_btn");
+    pre_btn.classList.add("disabled_btn");
 
-  close.onclick = function () {
-    windowEl.parentNode.removeChild(windowEl);
-  };
+    pre_btn.innerHTML =
+        '<svg t="1663692144197" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2173" width="20" height="20"><path d="M745.376 662.624L512 429.248l-233.376 233.376-45.248-45.248L512 338.752l278.624 278.624z" fill="#181818" p-id="2174"></path></svg>';
+    btn_box.appendChild(pre_btn);
+    // 搜索按钮点击
+    pre_btn.onclick = function() {
+        pre_result();
+    };
 
-  // 提示信息
-  let msg = document.createElement("div");
-  msg.classList.add("msg_box");
-  msg.style = `
+    // 搜索结果导航按钮 - 下一个
+    let next_btn = document.createElement("a");
+
+    next_btn.classList.add("nav_btn");
+    next_btn.classList.add("next_btn");
+    next_btn.classList.add("disabled_btn");
+
+    next_btn.innerHTML =
+        '<svg t="1663692104684" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2019" width="20" height="20"><path d="M512 685.248l-278.624-278.624 45.248-45.248L512 594.752l233.376-233.376 45.248 45.248z" fill="#181818" p-id="2020"></path></svg>';
+    btn_box.appendChild(next_btn);
+    // 搜索按钮点击
+    next_btn.onclick = function() {
+        next_result();
+    };
+
+    // 关闭按钮
+    let close = document.createElement("a");
+    close.innerHTML =
+        '<svg t="1663692441621" class="icon" viewBox="0 0 1045 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="7983" width="18" height="18"><path d="M282.517333 213.376l-45.354666 45.162667L489.472 512 237.162667 765.461333l45.354666 45.162667L534.613333 557.354667l252.096 253.269333 45.354667-45.162667-252.288-253.44 252.288-253.482666-45.354667-45.162667L534.613333 466.624l-252.096-253.226667z" p-id="7984"></path></svg>';
+    close.classList.add("close_btn");
+    btn_box.appendChild(close);
+
+    close.onclick = function() {
+        windowEl.parentNode.removeChild(windowEl);
+    };
+
+    // 提示信息
+    let msg = document.createElement("div");
+    msg.classList.add("msg_box");
+    msg.style = `
     margin: 68px 10px 10px;
     `;
-  windowEl.appendChild(msg);
+    windowEl.appendChild(msg);
 
-  // 搜索结果
-  list = document.createElement("ul");
-  list.classList.add("result_list");
+    // 搜索结果
+    list = document.createElement("ul");
+    list.classList.add("result_list");
 
-  windowEl.appendChild(list);
+    windowEl.appendChild(list);
 
-  search_btn.innerText = "Find";
+    search_btn.innerText = "Find";
 
-  return windowEl;
+    return windowEl;
 }
 
 // 显示搜索结果
 function show_result(result_list) {
-  // 隐藏提示信息
-  if (document.querySelector(".msg_box") && document.querySelector(".msg_box").innerHTML != "") {
-    document.querySelector(".msg_box").innerHTML = "";
-  }
+    // 隐藏提示信息
+    if (document.querySelector(".msg_box") && document.querySelector(".msg_box").innerHTML != "") {
+        document.querySelector(".msg_box").innerHTML = "";
+    }
 
-  let list;
-  if (document.querySelector(".result_list")) {
-    list = document.querySelector(".result_list");
-  } else {
-    list = document.createElement("ul");
-    list.classList.add("result_list");
-  }
+    let list;
+    if (document.querySelector(".result_list")) {
+        list = document.querySelector(".result_list");
+    } else {
+        list = document.createElement("ul");
+        list.classList.add("result_list");
+    }
 
-  for (let i = 0; i < result_list.length; i++) {
-    let r = document.createElement("li");
-    let list_link = document.createElement("a");
-    list_link.classList.add("link_item");
-    // 设置自定义属性，标记当前元素的 index
-    list_link.setAttribute("index", result_count - 1);
+    for (let i = 0; i < result_list.length; i++) {
+        let r = document.createElement("li");
+        let list_link = document.createElement("a");
+        list_link.classList.add("link_item");
+        // 设置自定义属性，标记当前元素的 index
+        list_link.setAttribute("index", result_count - 1);
 
-    // 关键字高亮
-    let r_str = result_list[i]["node"].characters;
-    const Reg = new RegExp("(" + result_list[i]["keyword"] + ")", "gi");
-    r_str = r_str.replace(Reg, `<span style="color: var(--color-text-brand,#0d99ff);font-weight: bold;">$1</span>`);
+        // 关键字高亮
+        let r_str = result_list[i]["node"].characters;
+        const Reg = new RegExp("(" + result_list[i]["keyword"] + ")", "gi");
+        r_str = r_str.replace(Reg, `<span style="color: var(--color-text-brand,#0d99ff);font-weight: bold;">$1</span>`);
 
-    list_link.innerHTML = r_str;
+        list_link.innerHTML = r_str;
 
-    // 点击定位到对应的图层
-    list_link.onclick = function (e) {
-      console.log(e);
-      console.log(e.path[1]);
-      // console.log(e.target.getAttribute("index"));
+        // 点击定位到对应的图层
+        list_link.onclick = function(e) {
+            console.log(e);
+            console.log(e.path[1]);
+            // console.log(e.target.getAttribute("index"));
 
-      // 设置当前选中的位置
-      list_current_index = new Number(e.target.getAttribute("index"));
+            // 设置当前选中的位置
+            list_current_index = new Number(e.target.getAttribute("index"));
 
-      // 点击对象设置在可视范围内（如果不在可视范围内）
-      console.log(e.target.parentElement.getBoundingClientRect());
-      let this_top = e.target.parentElement.getBoundingClientRect().top;
-      // 如果当前元素距离顶部的位置大于容器高度
-      if (this_top > windowEl.clientHeight || this_top < 0) {
-        e.target.parentElement.scrollIntoView();
-        document.querySelector(".result_list").scrollTop = e.target.offsetTop - 100;
-      }
+            // 点击对象设置在可视范围内（如果不在可视范围内）
+            console.log(e.target.parentElement.getBoundingClientRect());
+            let this_top = e.target.parentElement.getBoundingClientRect().top;
+            // 如果当前元素距离顶部的位置大于容器高度
+            if (this_top > windowEl.clientHeight || this_top < 0) {
+                e.target.parentElement.scrollIntoView();
+                document.querySelector(".result_list").scrollTop = e.target.offsetTop - 100;
+            }
 
-      // 取消旧的选中样式
-      let current_seleted = document.querySelector(".list_selected");
-      if (current_seleted) {
-        current_seleted.classList.remove("list_selected");
-      }
-      // 当前对象显示选中样式
-      e.target.parentElement.classList.add("list_selected");
+            // 取消旧的选中样式
+            let current_seleted = document.querySelector(".list_selected");
+            if (current_seleted) {
+                current_seleted.classList.remove("list_selected");
+            }
+            // 当前对象显示选中样式
+            e.target.parentElement.classList.add("list_selected");
 
-      // // 如果选中的是第 1 个结果，则禁用「上一个」按钮
-      // if (list_current_index <= 0) {
-      //     setNavBtnDisabled('.pre_btn');
-      // } else {
-      //     setNavBtnEnable('.pre_btn');
-      // }
+            // // 如果选中的是第 1 个结果，则禁用「上一个」按钮
+            // if (list_current_index <= 0) {
+            //     setNavBtnDisabled('.pre_btn');
+            // } else {
+            //     setNavBtnEnable('.pre_btn');
+            // }
 
-      // // 如果选中的是最后 1 个结果，则禁用「下一个」按钮
-      // if (list_current_index >= result_count - 1) {
-      //     setNavBtnDisabled('.next_btn');
-      // } else {
-      //     setNavBtnEnable('.next_btn');
-      // }
+            // // 如果选中的是最后 1 个结果，则禁用「下一个」按钮
+            // if (list_current_index >= result_count - 1) {
+            //     setNavBtnDisabled('.next_btn');
+            // } else {
+            //     setNavBtnEnable('.next_btn');
+            // }
 
-      // 设置导航信息
-      document.querySelector(".index_and_count").innerHTML = list_current_index + 1 + "/" + result_count.toString();
+            // 设置导航信息
+            document.querySelector(".index_and_count").innerHTML = list_current_index + 1 + "/" + result_count.toString();
 
-      // 设置已访问样式
-      e.target.parentElement.classList.add("a_visited");
+            // 设置已访问样式
+            e.target.parentElement.classList.add("a_visited");
 
-      // 搜索结果是否在当前页面
-      // 当前页面 ID
-      let this_page_id = figma.currentPage.id;
+            // 搜索结果是否在当前页面
+            // 当前页面 ID
+            let this_page_id = figma.currentPage.id;
 
-      // 目标图层所在的页面 ID
-      let this_node_parent_page_id = "";
+            // 目标图层所在的页面 ID
+            let this_node_parent_page_id = "";
 
-      let p = result_list[i]["node"].parent;
-      while (true) {
-        if (p.type == "DOCUMENT") {
-          break;
-        }
+            let p = result_list[i]["node"].parent;
+            while (true) {
+                if (p.type == "DOCUMENT") {
+                    break;
+                }
 
-        if (p.type == "PAGE") {
-          this_node_parent_page_id = p.id;
-          break;
-        } else {
-          p = p.parent;
-        }
-      }
+                if (p.type == "PAGE") {
+                    this_node_parent_page_id = p.id;
+                    break;
+                } else {
+                    p = p.parent;
+                }
+            }
 
-      if (this_node_parent_page_id != "" && this_page_id != this_node_parent_page_id) {
-        // 点击对象不在当前页面，跳转到对应页面
-        let document_children = figma.root.children;
-        let document_children_length = document_children.length;
+            if (this_node_parent_page_id != "" && this_page_id != this_node_parent_page_id) {
+                // 点击对象不在当前页面，跳转到对应页面
+                let document_children = figma.root.children;
+                let document_children_length = document_children.length;
 
-        for (let index = document_children_length - 1; index > -1; index--) {
-          if (document_children[index]["id"] == this_node_parent_page_id) {
-            figma.currentPage = document_children[index];
-            break;
-          }
-        }
-      }
+                for (let index = document_children_length - 1; index > -1; index--) {
+                    if (document_children[index]["id"] == this_node_parent_page_id) {
+                        figma.currentPage = document_children[index];
+                        break;
+                    }
+                }
+            }
 
-      // Figma 视图定位到对应图层
-      figma.viewport.scrollAndZoomIntoView([result_list[i]["node"]]);
-      // 选中图层
-      figma.currentPage.selectedTextRange = {
-        node: result_list[i]["node"],
-        start: result_list[i]["start"],
-        end: result_list[i]["end"],
-      };
+            // Figma 视图定位到对应图层
+            figma.viewport.scrollAndZoomIntoView([result_list[i]["node"]]);
+            // 选中图层
+            figma.currentPage.selectedTextRange = {
+                node: result_list[i]["node"],
+                start: result_list[i]["start"],
+                end: result_list[i]["end"],
+            };
 
-      // 文本框保持焦点，方便监听回车键进行导航
-      document.querySelector(".search_input").focus();
+            // 文本框保持焦点，方便监听回车键进行导航
+            document.querySelector(".search_input").focus();
 
-    };
-    r.appendChild(list_link);
-    list.appendChild(r);
-    // windowEl.appendChild(list);
-  }
+        };
+        r.appendChild(list_link);
+        list.appendChild(r);
+        // windowEl.appendChild(list);
+    }
 
-  // 记录当前生成了多少个节点
-  result_node_list = document.getElementsByClassName("link_item");
+    // 记录当前生成了多少个节点
+    result_node_list = document.getElementsByClassName("link_item");
 }
 
 // 搜索
 function figma_serach(keyword) {
-  // 如果关键字为空，则忽略
-  if (keyword == "") {
-    return;
-  }
-
-  // 提示正在搜索中
-  if (document.querySelector(".msg_box")) {
-    document.querySelector(".msg_box").innerHTML = "Loading…";
-  }
-  // 清空搜索结果
-  document.querySelector(".result_list").innerHTML = "";
-  // 重置搜索结果数量
-  result_count = 0;
-
-  // 获取文档中的所有文本图层
-  let all_text_node = figma.root.findAllWithCriteria({ types: ["TEXT"] });
-  let result_list = [];
-
-  // 遍历所有文本图层，寻找包含关键字的图层
-  const Reg = new RegExp(keyword, "i");
-
-  for (let i = 0; i < all_text_node.length; i++) {
-    setTimeout(() => {
-      let r = all_text_node[i].characters.match(Reg);
-
-      if (r != null) {
-        // console.log(all_text_node[i].characters);
-
-        // 关键字的索引位置
-        let index_start = r.index;
-        // 关键字的结束位置
-        let index_end = index_start + keyword.length;
-
-        let data_temp = {
-          node: all_text_node[i],
-          start: index_start,
-          end: index_end,
-          keyword: keyword,
-        };
-        result_count += 1;
-        show_result([data_temp]);
-      }
-    }, 40);
-  }
-
-  // 搜索结束
-  setTimeout(() => {
-    // 设置导航信息
-    document.querySelector(".index_and_count").innerHTML = "0/" + result_count.toString();
-    // setNavBtnDisabled('.pre_btn');
-
-    // 没有搜索结果
-    if (result_count == 0) {
-      document.querySelector(".msg_box").innerHTML = "Not find 🧐";
-
-      // 禁用导航按钮
-      setNavBtnDisabled(".nav_btn");
-
-      // 隐藏提示信息
-      // if (document.querySelector(".msg_box") && document.querySelector(".msg_box").innerHTML != "") {
-      //     document.querySelector(".msg_box").innerHTML = "";
-      // }
-    } else {
-      // 有搜索结果
-
-      // 设置导航按钮可用
-      setNavBtnEnable(".nav_btn");
-
-      // 设置页脚信息
-      let mail = document.createElement("a");
-      mail.innerText = "about";
-      mail.href = "https://km.netease.com/team/km_cfuncenter/article/445183";
-      mail.target = "_blank";
-      mail.classList.add("info");
-      document.querySelector(".result_list").appendChild(mail);
-
-      // document.querySelector(".result_list").innerHTML += '<p style="color: var(--color-text-fs-secondary);font-size:0.8rem;">jzlong666@gmail.com</p>'
+    // 如果关键字为空，则忽略
+    if (keyword == "") {
+        return;
     }
-  }, 100);
+
+    // 提示正在搜索中
+    if (document.querySelector(".msg_box")) {
+        document.querySelector(".msg_box").innerHTML = "Loading…";
+    }
+    // 清空搜索结果
+    document.querySelector(".result_list").innerHTML = "";
+    // 重置搜索结果数量
+    result_count = 0;
+
+    // 获取文档中的所有文本图层
+    let all_text_node = figma.root.findAllWithCriteria({ types: ["TEXT"] });
+    let result_list = [];
+
+    // 遍历所有文本图层，寻找包含关键字的图层
+    const Reg = new RegExp(keyword, "i");
+
+    for (let i = 0; i < all_text_node.length; i++) {
+        setTimeout(() => {
+            let r = all_text_node[i].characters.match(Reg);
+
+            if (r != null) {
+                // console.log(all_text_node[i].characters);
+
+                // 关键字的索引位置
+                let index_start = r.index;
+                // 关键字的结束位置
+                let index_end = index_start + keyword.length;
+
+                let data_temp = {
+                    node: all_text_node[i],
+                    start: index_start,
+                    end: index_end,
+                    keyword: keyword,
+                };
+                result_count += 1;
+                show_result([data_temp]);
+            }
+        }, 40);
+    }
+
+    // 搜索结束
+    setTimeout(() => {
+        // 设置导航信息
+        document.querySelector(".index_and_count").innerHTML = "0/" + result_count.toString();
+        // setNavBtnDisabled('.pre_btn');
+
+        // 没有搜索结果
+        if (result_count == 0) {
+            document.querySelector(".msg_box").innerHTML = "Not find 🧐";
+
+            // 禁用导航按钮
+            setNavBtnDisabled(".nav_btn");
+
+            // 隐藏提示信息
+            // if (document.querySelector(".msg_box") && document.querySelector(".msg_box").innerHTML != "") {
+            //     document.querySelector(".msg_box").innerHTML = "";
+            // }
+        } else {
+            // 有搜索结果
+
+            // 设置导航按钮可用
+            setNavBtnEnable(".nav_btn");
+
+            // 设置页脚信息
+            let mail = document.createElement("a");
+            mail.innerText = "about";
+            mail.href = "https://km.netease.com/team/km_cfuncenter/article/445183";
+            mail.target = "_blank";
+            mail.classList.add("info");
+            document.querySelector(".result_list").appendChild(mail);
+
+            // document.querySelector(".result_list").innerHTML += '<p style="color: var(--color-text-fs-secondary);font-size:0.8rem;">jzlong666@gmail.com</p>'
+        }
+    }, 100);
 }
 
 // 监听输入框敲击回车
 function onInputEnter(e) {
-  console.log(e);
-  // 回车键
-  if (e.keyCode == 13 && e.shiftKey == false) {
-    // 导航到下一个搜索结果
-    next_result();
-    // 文本框保持焦点，否则下一次回车键将无法导航
-    document.querySelector(".search_input").focus();
-  }
+    console.log(e);
+    // 回车键
+    if (e.keyCode == 13 && e.shiftKey == false) {
+        // 导航到下一个搜索结果
+        next_result();
+        // 文本框保持焦点，否则下一次回车键将无法导航
+        document.querySelector(".search_input").focus();
+    }
 
-  // Shift + 回车键
-  if (e.keyCode == 13 && e.shiftKey == true) {
-    // 导航到上一个搜索结果
-    pre_result();
-    // 文本框保持焦点，否则下一次回车键将无法导航
-    document.querySelector(".search_input").focus();
-  }
+    // Shift + 回车键
+    if (e.keyCode == 13 && e.shiftKey == true) {
+        // 导航到上一个搜索结果
+        pre_result();
+        // 文本框保持焦点，否则下一次回车键将无法导航
+        document.querySelector(".search_input").focus();
+    }
 }
 
 // 搜索框值变化事件
 function onSearchInputChange(e) {
-  console.log(my_timer);
+    console.log(my_timer);
 
-  if (my_timer) {
-    console.log("clearTimeout");
-    clearTimeout(my_timer);
-  }
+    if (my_timer) {
+        console.log("clearTimeout");
+        clearTimeout(my_timer);
+    }
 
-  my_timer = setTimeout(() => {
-    console.log("!!!!setTimeout search");
-    let keyword = document.querySelector(".search_input").value;
-    figma_serach(keyword);
-  }, 500);
+    my_timer = setTimeout(() => {
+        console.log("!!!!setTimeout search");
+        let keyword = document.querySelector(".search_input").value;
+        figma_serach(keyword);
+    }, 500);
 }
 
 function setNavBtnDisabled(class_name) {
-  let nav_btn = document.querySelectorAll(class_name);
-  nav_btn.forEach((btn) => {
-    btn.classList.add("disabled_btn");
-  });
+    let nav_btn = document.querySelectorAll(class_name);
+    nav_btn.forEach((btn) => {
+        btn.classList.add("disabled_btn");
+    });
 }
 
 function setNavBtnEnable(class_name) {
-  let nav_btn = document.querySelectorAll(class_name);
-  nav_btn.forEach((btn) => {
-    btn.classList.remove("disabled_btn");
-  });
+    let nav_btn = document.querySelectorAll(class_name);
+    nav_btn.forEach((btn) => {
+        btn.classList.remove("disabled_btn");
+    });
 }
 
 // 导航到下一个搜索结果
 function next_result() {
-  // 设置搜索结果获取焦点
-  // let r_list = document.getElementsByClassName("link_item");
+    // 设置搜索结果获取焦点
+    // let r_list = document.getElementsByClassName("link_item");
 
-  if (list_current_index + 1 >= result_node_list.length) {
-    // 选中第 1 个结果
-    list_current_index = -1;
-  }
+    if (list_current_index + 1 >= result_node_list.length) {
+        // 选中第 1 个结果
+        list_current_index = -1;
+    }
 
-  console.log(list_current_index + 1);
-  result_node_list[list_current_index + 1].click();
+    console.log(list_current_index + 1);
+    result_node_list[list_current_index + 1].click();
 }
 
 function pre_result() {
-  if (list_current_index <= 0) {
-    // 选中最后 1 个搜索结果
-    list_current_index = result_count;
-  }
+    if (list_current_index <= 0) {
+        // 选中最后 1 个搜索结果
+        list_current_index = result_count;
+    }
 
-  console.log(list_current_index - 1);
-  result_node_list[list_current_index - 1].click();
+    console.log(list_current_index - 1);
+    result_node_list[list_current_index - 1].click();
 }
